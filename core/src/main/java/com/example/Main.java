@@ -13,8 +13,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * platforms.
  */
 public class Main extends ApplicationAdapter {
+    private int desiredwidth;
+    private int desiredheight;
     private SpriteBatch batch;
-    private Texture image;
+    private Texture cursor;
     private Texture background;
     float x = 50;
     float y = 50;
@@ -22,8 +24,12 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("BinaryGameBackground.png"));
-        image = new Texture(Gdx.files.internal("Untitled.png"));
+        background = new Texture(Gdx.files.internal("galaxy.jpg"));
+        cursor = new Texture(Gdx.files.internal("cursor2.png"));
+
+        desiredwidth = Gdx.graphics.getWidth();
+        desiredheight = Gdx.graphics.getHeight();
+
     }
 
     @Override
@@ -31,20 +37,32 @@ public class Main extends ApplicationAdapter {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
         batch.draw(background, 0, 0);
-        batch.draw(image, x, y);
+        batch.draw(cursor, x, y);
         batch.end();
-        if (Gdx.input.isKeyPressed(Keys.K)) {
-            y = y + 5;
-        } else if (Gdx.input.isKeyPressed(Keys.J)) {
-            y = y - 5;
-        } else if (Gdx.input.isKeyPressed(Keys.H)) {
-            x = x - 5;
+        y = 10;
+
+        if (Gdx.input.isKeyPressed(Keys.H)) {
+            x = x - 4;
         } else if (Gdx.input.isKeyPressed(Keys.L)) {
-            x = x + 5;
+            x = x + 4;
         } else if (Gdx.input.isKeyPressed(Keys.E) || Gdx.input.isKeyPressed(Keys.W)) {
-            x = x + 10;
+            x = x + 8;
         } else if (Gdx.input.isKeyPressed(Keys.B)) {
-            x = x - 10;
+            x = x - 8;
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.H)) {
+            x = x - 4;
+        } else if (Gdx.input.isKeyPressed(Keys.L)) {
+            x = x + 4;
+        } else if (Gdx.input.isKeyPressed(Keys.E) || Gdx.input.isKeyPressed(Keys.W)) {
+            x = x + 8;
+        } else if (Gdx.input.isKeyPressed(Keys.B)) {
+            x = x - 8;
+        } else if (x > 800) {
+            x = 0;
+        } else if (x > 0) {
+            x = 800;
         }
 
     }
@@ -52,6 +70,6 @@ public class Main extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        image.dispose();
+        cursor.dispose();
     }
 }
