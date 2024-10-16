@@ -18,6 +18,7 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture cursor;
     private Texture background;
+    private Texture alien;
     float x = 50;
     float y = 50;
 
@@ -25,7 +26,8 @@ public class Main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("galaxy.jpg"));
-        cursor = new Texture(Gdx.files.internal("cursor2.png"));
+        cursor = new Texture(Gdx.files.internal("cursor22.png"));
+        alien = new Texture(Gdx.files.internal("green-box.png"));
 
         desiredwidth = Gdx.graphics.getWidth();
         desiredheight = Gdx.graphics.getHeight();
@@ -38,31 +40,34 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         batch.draw(background, 0, 0);
         batch.draw(cursor, x, y);
+        batch.draw(alien, 400, 550);
         batch.end();
         y = 10;
 
         if (Gdx.input.isKeyPressed(Keys.H)) {
-            x = x - 4;
+            x = x - 2;
         } else if (Gdx.input.isKeyPressed(Keys.L)) {
-            x = x + 4;
+            x = x + 2;
         } else if (Gdx.input.isKeyPressed(Keys.E) || Gdx.input.isKeyPressed(Keys.W)) {
-            x = x + 8;
+            x = x + 4;
         } else if (Gdx.input.isKeyPressed(Keys.B)) {
-            x = x - 8;
+            x = x - 4;
         }
 
         if (Gdx.input.isKeyPressed(Keys.H)) {
-            x = x - 4;
+            x = x - 2;
         } else if (Gdx.input.isKeyPressed(Keys.L)) {
-            x = x + 4;
+            x = x + 2;
         } else if (Gdx.input.isKeyPressed(Keys.E) || Gdx.input.isKeyPressed(Keys.W)) {
-            x = x + 8;
+            x = x + 4;
         } else if (Gdx.input.isKeyPressed(Keys.B)) {
-            x = x - 8;
-        } else if (x > 800) {
-            x = 0;
-        } else if (x > 0) {
-            x = 800;
+            x = x - 4;
+        }
+
+        if (x > 799) {
+            x = 1;
+        } else if (x < 1) {
+            x = 799;
         }
 
     }
