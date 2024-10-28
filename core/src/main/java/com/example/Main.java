@@ -26,10 +26,10 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("starts.jpg"));
-        cursor = new Texture(Gdx.files.internal("amogus.gif"));
-        alien = new Texture(Gdx.files.internal("amogus.gif"));
-        bullet = new Texture(Gdx.files.internal("redmonster.png"));
+        background = new Texture(Gdx.files.internal("pinkspace.jpg"));
+        cursor = new Texture(Gdx.files.internal("ship.png"));
+        alien = new Texture(Gdx.files.internal("alien.png"));
+        bullet = new Texture(Gdx.files.internal("firebullet.png"));
 
         desiredwidth = Gdx.graphics.getWidth();
         desiredheight = Gdx.graphics.getHeight();
@@ -41,8 +41,7 @@ public class Main extends ApplicationAdapter {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
         batch.draw(background, 0, 0);
-        batch.draw(cursor, x, y);
-        batch.draw(alien, 400, 550);
+        batch.draw(alien, 1600, 1500);
         batch.end();
         y = 10;
 
@@ -72,6 +71,14 @@ public class Main extends ApplicationAdapter {
             x = 3839;
         }
 
+    }
+
+    public void shoot() {
+        if (Gdx.input.isKeyPressed(Keys.X)) {
+
+            batch.draw(bullet, x, );
+
+        }
     }
 
     @Override
