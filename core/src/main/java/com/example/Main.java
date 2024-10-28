@@ -19,15 +19,17 @@ public class Main extends ApplicationAdapter {
     private Texture cursor;
     private Texture background;
     private Texture alien;
+    private Texture bullet;
     float x = 50;
     float y = 50;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("galaxy.jpg"));
-        cursor = new Texture(Gdx.files.internal("cursor22.png"));
-        alien = new Texture(Gdx.files.internal("green-box.png"));
+        background = new Texture(Gdx.files.internal("3840x2160.png"));
+        cursor = new Texture(Gdx.files.internal("amogus.gif"));
+        alien = new Texture(Gdx.files.internal("amogus.gif"));
+        bullet = new Texture(Gdx.files.internal("redmonster.png"));
 
         desiredwidth = Gdx.graphics.getWidth();
         desiredheight = Gdx.graphics.getHeight();
@@ -45,29 +47,29 @@ public class Main extends ApplicationAdapter {
         y = 10;
 
         if (Gdx.input.isKeyPressed(Keys.H)) {
-            x = x - 2;
+            x = x - 16;
         } else if (Gdx.input.isKeyPressed(Keys.L)) {
-            x = x + 2;
+            x = x + 16;
         } else if (Gdx.input.isKeyPressed(Keys.E) || Gdx.input.isKeyPressed(Keys.W)) {
-            x = x + 4;
+            x = x + 32;
         } else if (Gdx.input.isKeyPressed(Keys.B)) {
-            x = x - 4;
+            x = x - 32;
         }
 
         if (Gdx.input.isKeyPressed(Keys.H)) {
-            x = x - 2;
+            x = x - 16;
         } else if (Gdx.input.isKeyPressed(Keys.L)) {
-            x = x + 2;
+            x = x + 16;
         } else if (Gdx.input.isKeyPressed(Keys.E) || Gdx.input.isKeyPressed(Keys.W)) {
-            x = x + 4;
+            x = x + 32;
         } else if (Gdx.input.isKeyPressed(Keys.B)) {
-            x = x - 4;
+            x = x - 32;
         }
 
-        if (x > 799) {
+        if (x > 3839) {
             x = 1;
         } else if (x < 1) {
-            x = 799;
+            x = 3839;
         }
 
     }
