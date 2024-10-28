@@ -26,7 +26,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("3840x2160.png"));
+        background = new Texture(Gdx.files.internal("starts.jpg"));
         cursor = new Texture(Gdx.files.internal("amogus.gif"));
         alien = new Texture(Gdx.files.internal("amogus.gif"));
         bullet = new Texture(Gdx.files.internal("redmonster.png"));
