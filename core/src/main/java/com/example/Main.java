@@ -1,5 +1,4 @@
 package com.example;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -7,37 +6,33 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.ArrayList;
+import com.example.Alien;
+import com.example.Bullet;
 
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture cursor;
     private Texture background;
     private Texture alienTexture;
-    private Texture bullet;
+    private Texture bulletTexture;
     private float playerX = 300;
     private float playerY = 50;
-    private float bulletX = -1; // -1 indicates no active bullet
-    private float bulletY = -1;
     private final int screenWidth = 1920;
     private final int screenHeight = 1080;
-
-    private boolean movingRight = true;
-
     private ArrayList<Alien> aliens;
-
-// TODO get new images for all of this or make the art
+    private ArrayList<Bullet> bullets;
+    private boolean movingRight = true;
 
     @Override
     public void create() {
+
         background = new Texture(Gdx.files.internal("spacebackground.jpg"));
         cursor = new Texture(Gdx.files.internal("Untitled.png"));
         alienTexture = new Texture(Gdx.files.internal("amogus.gif"));
-        bullet = new Texture(Gdx.files.internal("PinkBullet.png"));
+        bulletTexture = new Texture(Gdx.files.internal("PinkBullet.png"));
         batch = new SpriteBatch();
 
-
-
-        aliens = new ArrayList<>(); //spread them aliens out
+        aliens = new ArrayList<>();
         int rows = 2;
         int cols = 5;
         int spacing = 100;
@@ -46,108 +41,48 @@ public class Main extends ApplicationAdapter {
                 aliens.add(new Alien(250 + col * spacing, 500 + row * spacing, 64, 64, "alien.png"));
             }
         }
+
+        bullets = new ArrayList<>();
     }
 
+    @Override
+    public void render() {
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
+        handlePlayerMovement();
+        handleShooting();
 
-
-@Override
-public void render() {
-    ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
-    handlePlayerMovement();
-    handleShooting();
-
-    boolean hitEdge = false;
-    for (Alien alien : aliens) {
-        alien.move(movingRight ? 5 : -5, 0);
-
-        if (alien.getX() + alien.getWidth() > screenWidth || alien.getX() < 0) {
-            movingRight = !movingRight;
-            hitEdge = true; }
-
-        if (isCollisionWithPlayer(alien)) {
-            gameOver();
-            return;
-        }
-
-        if (alien.getY() <= 50) {
-            gameOver();
-            return;          }
-
-        if (isCollisionWithBullet(alien)) {
-            alien.setAlive(false);
-            bulletY = -1;  // Reset bullet off-screen
-            break;
-        }
-    }
-
-    if (hitEdge) {
         for (Alien alien : aliens) {
-            alien.move(0, -50); // Move all aliens down by 50 units
+            alien.move(movingRight ? 5 : -5, 0);
+
+            if (alien.getX() + alien.getWidth() > screenWidth || alien.getX() < 0) {
+                movingRight = !movingRight;
+                aliens.forEach(a -> a.move(0, -50));
+            }
         }
+
+        for (Bullet bullet : bullets) {
+            bullet.update();
+        }
+
+        bullets.removeIf(bullet -> bullet.isOffScreen(screenHeight));
+
+        batch.begin();
+        batch.draw(background, 0, 0, screenWidth, screenHeight);
+        batch.draw(cursor, playerX, playerY);
+
+        for (Bullet bullet : bullets) {
+            batch.draw(bulletTexture, bullet.getX(), bullet.getY());
+        }
+
+        for (Alien alien : aliens) {
+            if (alien.isAlive()) {
+                batch.draw(alienTexture, alien.getX(), alien.getY());
+            }
+        }
+
+        batch.end();
     }
-
-
-batch.begin();
-
-batch.setColor(1f, 1f, 1f, 0.5f);
-batch.draw(background, 0, 0, screenWidth, screenHeight);
-
-batch.setColor(1f,1f, 1f, 1f);  // Reset to full opacity for other textures
-
-batch.draw(cursor, playerX, playerY);
-
-if (bulletY > -1) {
-    batch.draw(bullet, bulletX, bulletY);
-}
-
-for (Alien alien : aliens) {
-    if (alien.isAlive()) {
-        batch.draw(alienTexture, alien.getX(), alien.getY());
-    }
-}
-
-batch.end();
-}
-
-
-
-
-
-
-
-private boolean isCollisionWithPlayer(Alien alien) {
-    return alien.getX() < playerX + cursor.getWidth() &&
-           alien.getX() + alien.getWidth() > playerX &&
-           alien.getY() < playerY + cursor.getHeight() &&
-           alien.getY() + alien.getHeight() > playerY;
-}
-
-private boolean isCollisionWithBullet(Alien alien) {
-    return bulletX > alien.getX() &&
-           bulletX < alien.getX() + alien.getWidth() &&
-           bulletY > alien.getY() &&
-           bulletY < alien.getY() + alien.getHeight();
-}
-
-private void gameOver() {
-    resetGame();
-    System.out.println("Game Over!");
-}
-
-private void resetGame() {
-    playerX = 300;
-    playerY = 50;
-    bulletY = -1;  // Reset bullet
-    aliens.clear();
-
-}
-
-
-
-
-
 
     private void handlePlayerMovement() {
         if (Gdx.input.isKeyPressed(Keys.H)) {
@@ -165,15 +100,8 @@ private void resetGame() {
 
     private void handleShooting() {
         if (Gdx.input.isKeyJustPressed(Keys.X)) {
-            bulletX = playerX + cursor.getWidth() / 2 - bullet.getWidth() / 2;
-            bulletY = playerY + cursor.getHeight();
-        }
-
-        if (bulletY > -1) {
-            bulletY += 20;
-            if (bulletY > screenHeight) {
-                bulletY = -1; // Reset bullet off screen when it passes bottom
-            }
+            // Create a new bullet each time
+            bullets.add(new Bullet(playerX + cursor.getWidth() / 2 - bulletTexture.getWidth() / 2, playerY + cursor.getHeight()));
         }
     }
 
@@ -183,7 +111,7 @@ private void resetGame() {
         cursor.dispose();
         background.dispose();
         alienTexture.dispose();
-        bullet.dispose();
-
+        bulletTexture.dispose();
     }
 }
+
