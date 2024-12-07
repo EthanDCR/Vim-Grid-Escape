@@ -12,7 +12,6 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture cursor;
     private Texture background;
-    private Texture gameover;
     private Texture alienTexture;
     private Texture bullet;
     private float playerX = 300;
@@ -89,22 +88,34 @@ public void render() {
         }
     }
 
-    batch.begin();
-    batch.draw(background, 0, 0, screenWidth, screenHeight);
-    batch.draw(cursor, playerX, playerY);
 
-    // Draw the bullet if it's active
-    if (bulletY > -1) {
-        batch.draw(bullet, bulletX, bulletY);
-    }
+batch.begin();
 
-    for (Alien alien : aliens) {
-        if (alien.isAlive()) {
-            batch.draw(alienTexture, alien.getX(), alien.getY());
-        }
-    }
-    batch.end();
+batch.setColor(1f, 1f, 1f, 0.5f);
+batch.draw(background, 0, 0, screenWidth, screenHeight);
+
+batch.setColor(1f,1f, 1f, 1f);  // Reset to full opacity for other textures
+
+batch.draw(cursor, playerX, playerY);
+
+if (bulletY > -1) {
+    batch.draw(bullet, bulletX, bulletY);
 }
+
+for (Alien alien : aliens) {
+    if (alien.isAlive()) {
+        batch.draw(alienTexture, alien.getX(), alien.getY());
+    }
+}
+
+batch.end();
+}
+
+
+
+
+
+
 
 private boolean isCollisionWithPlayer(Alien alien) {
     return alien.getX() < playerX + cursor.getWidth() &&
