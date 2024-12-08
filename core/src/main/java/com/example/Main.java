@@ -37,7 +37,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         // Load resources
-        background = new Texture(Gdx.files.internal("spacebackground.jpg"));
+        background = new Texture(Gdx.files.internal("cartoonBackground.png"));
         cursor = new Texture(Gdx.files.internal("shipPink.png"));
         alienTexture = new Texture(Gdx.files.internal("shipGreen_manned.png"));
         bulletTexture = new Texture(Gdx.files.internal("cursorBullet.png"));
