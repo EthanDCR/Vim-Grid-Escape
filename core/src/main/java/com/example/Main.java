@@ -10,6 +10,15 @@ import com.example.Alien;
 import com.example.Bullet;
 
 public class Main extends ApplicationAdapter {
+
+
+
+
+
+
+
+
+
     private SpriteBatch batch;
     private Texture cursor;
     private Texture background;
@@ -27,9 +36,9 @@ public class Main extends ApplicationAdapter {
     public void create() {
 
         background = new Texture(Gdx.files.internal("spacebackground.jpg"));
-        cursor = new Texture(Gdx.files.internal("Untitled.png"));
-        alienTexture = new Texture(Gdx.files.internal("amogus.gif"));
-        bulletTexture = new Texture(Gdx.files.internal("PinkBullet.png"));
+        cursor = new Texture(Gdx.files.internal("shipPink.png"));
+        alienTexture = new Texture(Gdx.files.internal("shipGreen_manned.png"));
+        bulletTexture = new Texture(Gdx.files.internal("laserPink1.png"));
         batch = new SpriteBatch();
 
         aliens = new ArrayList<>();
@@ -51,6 +60,7 @@ public class Main extends ApplicationAdapter {
 
         handlePlayerMovement();
         handleShooting();
+        handleCollision();
 
         for (Alien alien : aliens) {
             alien.move(movingRight ? 5 : -5, 0);
@@ -104,6 +114,31 @@ public class Main extends ApplicationAdapter {
             bullets.add(new Bullet(playerX + cursor.getWidth() / 2 - bulletTexture.getWidth() / 2, playerY + cursor.getHeight()));
         }
     }
+
+
+
+private void handleCollision() {
+    for (int i = 0; i < bullets.size(); i++) {
+        Bullet bullet = bullets.get(i);
+
+        for (int j = 0; j < aliens.size(); j++) {
+            Alien alien = aliens.get(j);
+
+            if (alien.isAlive() && bullet.getBoundingBox().overlaps(alien.getBoundingBox())) {
+                alien.setAlive(false);
+                bullets.remove(i);
+                i--; // Adjust the index since we removed a bullet
+                break;  }
+        }
+    }
+}
+
+
+
+
+
+
+
 
     @Override
     public void dispose() {
