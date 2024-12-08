@@ -1,29 +1,41 @@
-
 package com.example;
+
 import com.badlogic.gdx.math.Rectangle;
 
-
 public class Bullet {
-    private float x;
-    private float y;
-    private float speed = 20;
-    private float width = 10, height = 20;
+    private float x, y;
+    private int width, height;
+    private boolean active;
 
     public Bullet(float x, float y) {
         this.x = x;
         this.y = y;
+        this.width = 10;
+        this.height = 20;
+        this.active = true;
     }
 
     public void update() {
-        y += speed; // Move the bullet upwards
+        this.y += 10;
     }
 
-
-  public Rectangle getBoundingBox() {
-        return new Rectangle(x, y, width, height);
+    public boolean isOffScreen(int screenHeight) {
+        return y > screenHeight;
     }
 
+    public boolean collidesWith(Alien alien) {
+        Rectangle bulletRect = new Rectangle(x, y, width, height);
+        Rectangle alienRect = new Rectangle(alien.getX(), alien.getY(), alien.getWidth(), alien.getHeight());
+        return bulletRect.overlaps(alienRect);
+    }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
 
     public float getX() {
         return x;
@@ -32,17 +44,5 @@ public class Bullet {
     public float getY() {
         return y;
     }
-
-    public boolean isOffScreen(int screenHeight) {
-        return y > screenHeight;
-    }
 }
-
-
-
-
-
-
-
-
 
