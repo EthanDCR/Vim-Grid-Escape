@@ -40,7 +40,7 @@ public class Main extends ApplicationAdapter {
         background = new Texture(Gdx.files.internal("spacebackground.jpg"));
         cursor = new Texture(Gdx.files.internal("shipPink.png"));
         alienTexture = new Texture(Gdx.files.internal("shipGreen_manned.png"));
-        bulletTexture = new Texture(Gdx.files.internal("laserPink1.png"));
+        bulletTexture = new Texture(Gdx.files.internal("cursorBullet.png"));
         startScreen = new Texture(Gdx.files.internal("startScreen.png"));
         winScreen = new Texture(Gdx.files.internal("winScreen.png"));
         loseScreen = new Texture(Gdx.files.internal("loseScreen.png"));
@@ -143,7 +143,8 @@ public class Main extends ApplicationAdapter {
         batch.draw(loseScreen, screenWidth / 2 - 200, screenHeight / 2 - 100, 400, 200);
 
         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-            restartGame();
+
+           restartGame();
         }
     }
 
